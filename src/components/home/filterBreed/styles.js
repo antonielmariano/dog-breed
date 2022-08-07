@@ -15,6 +15,7 @@ const medias =[
 
 export const Content = styled.section`
     display: flex;
+    top: 100px;
     align-items: center;
     gap: 20px;
     overflow-x: auto;

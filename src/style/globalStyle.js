@@ -34,7 +34,6 @@ const GlobalStyle = createGlobalStyle`
 }
 
 body{
-    background-color: var(--background-blue);
     font-family: 'Inter', sans-serif;
 }
 button{
@@ -48,6 +47,10 @@ input{
     border: none;
     outline: none;
     background-color: var(--background-grey);
+}
+li{
+    cursor: pointer;
+    border: none; 
 }
 
 `

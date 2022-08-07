@@ -1,24 +1,22 @@
 import { motion } from "framer-motion"
+import { StyledLi } from "./styles"
 
-const DogCard= ({dogImg})=> {
+const DogCard= ({dogImg, setSelectedId})=> {
 
   
     return(
-        
+        <>
         <motion.div
-        initial={{ opacity: 0, y: "-100%",}}
-        animate={{
-            scale: 1,
-            opacity: 1,
-            y: 0
-        }}
+        layoutId={dogImg} 
+        onClick={() => setSelectedId(dogImg)}
         >
             
-        <li>
+        <StyledLi>
             <img src={dogImg} alt="imagem cachorro"/>
-        </li>
+        </StyledLi>
         
         </motion.div>
+        </>
     )
 }
 

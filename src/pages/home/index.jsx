@@ -1,7 +1,7 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Container } from "./styles"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import Header from "../../components/home/header"
 import toast, { Toaster } from "react-hot-toast"
 import { LoggedUserContext } from "../../context/loggedUser"
@@ -23,20 +23,40 @@ const styleMotion ={
     overflow: "hidden",
 }
 
+
+const styledMotionImg = {
+    position: "fixed",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1001,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.55)",
+    cursor: "pointer"
+}
+
+
 const Home = ()=> {
 
     const token = localStorage.getItem("tokenDB")
 
     const history =  useHistory()
+    const [selectedId, setSelectedId] = useState(null)
 
     const {loggedUser} = useContext(LoggedUserContext)
     const {setListDogs} = useContext(ListDogsContext)
-    const {setLoading} = useContext(LoadingPageContext)
+    const {loading, setLoading} = useContext(LoadingPageContext)
+
+    useEffect(()=>{
+
+        !loggedUser && history.push("/")
+
+    }, [loggedUser])
 
     useEffect(()=>{
 
         toast.remove()
-        !loggedUser && history.push("/")
         setLoading(true)
         api.get("/list",  {headers: {
             Authorization: `${token}`,
@@ -44,40 +64,49 @@ const Home = ()=> {
         .then(res => setListDogs(res.data))
         .finally((res)=>setLoading(false))
 
-    }, [loggedUser])
+    }, [])
 
 
     return(
         <>
+        <AnimatePresence>
+            {selectedId && (
+                <motion.div layoutId={selectedId} onClick={() => setSelectedId(null)} style={styledMotionImg}>
+                    <motion.img src={selectedId} style={{width: "80%", maxWidth: "500px"}}/>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
         <Toaster
             position="top-center"
             reverseOrder={false}
             toastOptions={{duration: 1000}}
             />
+
         <motion.div
         style={{width: "100vw", height: "100vh"}}
         initial={{ opacity: 0 }}
         animate={{
             scale: 1,
             opacity: 1,
-        }}
-        >
+        }}>
             <Header/>
+
             <motion.div
-                style={styleMotion}
-                initial={{ opacity: 0, y: "-100%" }}
-                animate={{
-                    scale: 1,
-                    opacity: 1,
-                    y: 0
-                }}
-                >
-                    <FilterBreed/>       
-                </motion.div>
-            <Container>
-                <DogList/>  
+            style={styleMotion}
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{
+                scale: 1,
+                opacity: 1,
+                y: 0
+            }}>
+                <FilterBreed/>       
+            </motion.div>
+
+            <Container selected={loading? true : false}>
+                <DogList setSelectedId={setSelectedId}/>  
             </Container>
-            
+
         </motion.div>
         </>
     )

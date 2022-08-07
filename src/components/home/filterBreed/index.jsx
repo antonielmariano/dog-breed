@@ -23,7 +23,6 @@ const FilterBreed = ()=> {
         }})
         .then(res => setListDogs(res.data))
         .finally((res)=>setLoading(false))
-
     }
   
     return(
