@@ -16,12 +16,13 @@ const medias= [
 ]
 
 export const Container = styled.main`
-    width: 90vw;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     gap: 100px;
     align-items: center;
+    background-color: var(--background-blue);
     .div-img{
         display: flex;
         text-align: center;
