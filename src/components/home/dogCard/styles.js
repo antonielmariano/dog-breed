@@ -11,7 +11,8 @@ export const StyledLi = styled.li`
     z-index: 0;
 
     img{
-        width: 70px;
+        width: 100px;
+        height: 100px;
         object-fit: contain;
     }
 `
